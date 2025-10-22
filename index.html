@@ -19,13 +19,18 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 flex items-center justify-center min-h-screen">
+<body class="bg-gradient-to-br from-gray-100 to-blue-200 flex items-center justify-center min-h-screen">
     
     <main class="w-full max-w-lg mx-auto p-4 md:p-8">
-        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
             
+            <div class="flex justify-center mb-4">
+                <img src="https://i.imgur.com/PAylr2P.png" alt="Logo SK Pulau Melayu" class="w-20 h-20">
+            </div>
+
             <div class="text-center mb-6">
-                <h1 class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Semak Rumah Sukan Murid<br>SK Pulau Melayu</h1>
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Semak Rumah Sukan Murid</h1>
+                <p class="text-xl font-medium text-slate-600 mt-1">SK Pulau Melayu - Tahun 2025</p>
                 <p class="text-slate-500 mt-3">Taip nama untuk membuat semakan automatik.</p>
             </div>
 
@@ -39,8 +44,8 @@
                 </div>
             </div>
 
-            <div id="result-container" class="mt-8 bg-slate-50 p-6 rounded-xl border border-slate-200 hidden">
-                <div id="no-result" class="text-center text-slate-500 hidden">
+            <div id="result-container" class="mt-8 p-6 rounded-xl border hidden transition-all duration-300">
+                <div id="no-result" class="text-center hidden">
                     <p class="font-semibold">Maklumat tidak ditemui.</p>
                     <p class="text-sm">Sila pastikan nama dieja dengan betul.</p>
                 </div>
@@ -62,7 +67,7 @@
                      <div class="border-t border-slate-200"></div>
                     <div class="flex justify-between items-center">
                         <p class="text-sm font-medium text-slate-500">Rumah Sukan</p>
-                        <p id="result-rumah" class="text-right font-bold text-lg text-blue-600"></p>
+                        <p id="result-rumah" class="text-right font-bold text-lg"></p>
                     </div>
                      <div class="border-t border-slate-200"></div>
                      <div class="flex justify-between items-center">
@@ -266,12 +271,13 @@
             { nama: 'AISA ALIQAH BINTI JUNAIDI', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' }
         ];
 
-        // --- FUNGSI CARIAN ---
+        // --- FUNGSI CARIAN (DIKEMAS KINI DENGAN WARNA BARU) ---
         function cariMaklumat() {
             const input = document.getElementById('search-input').value.toUpperCase();
             const resultContainer = document.getElementById('result-container');
             const detailsDiv = document.getElementById('details');
             const noResultDiv = document.getElementById('no-result');
+            const rumahElement = document.getElementById('result-rumah');
 
             if (input.length < 2) {
                 // Jangan tunjuk apa-apa jika input terlalu pendek
@@ -281,6 +287,14 @@
 
             // Cari data yang sepadan dengan input pengguna
             const hasil = pangkalanData.find(data => data.nama.toUpperCase().includes(input));
+
+            // --- Reset styles ---
+            // Padam semua kelas warna sebelumnya
+            resultContainer.classList.remove('bg-red-50', 'border-red-300', 'bg-green-50', 'border-green-300', 'bg-gray-100', 'border-gray-400');
+            rumahElement.classList.remove('text-red-600', 'text-green-600', 'text-gray-900');
+            noResultDiv.classList.remove('text-red-700');
+            noResultDiv.classList.add('text-slate-500'); // Set semula ke warna asal
+
 
             resultContainer.classList.remove('hidden'); // Tunjukkan kotak hasil
 
@@ -295,10 +309,31 @@
                 document.getElementById('result-rumah').textContent = hasil.rumahSukan;
                 document.getElementById('result-peranan').textContent = hasil.peranan;
                 document.getElementById('result-jawatan').textContent = hasil.jawatan;
+                
+                // --- Guna warna dinamik berdasarkan rumah sukan (WARNA BARU) ---
+                if (hasil.rumahSukan === 'Jupiter') {
+                    // MERAH
+                    resultContainer.classList.add('bg-red-50', 'border-red-300');
+                    rumahElement.classList.add('text-red-600');
+                } else if (hasil.rumahSukan === 'Uranus') {
+                    // HITAM/KELABU
+                    resultContainer.classList.add('bg-gray-100', 'border-gray-400');
+                    rumahElement.classList.add('text-gray-900');
+                } else if (hasil.rumahSukan === 'Zuhal') {
+                    // HIJAU
+                    resultContainer.classList.add('bg-green-50', 'border-green-300');
+                    rumahElement.classList.add('text-green-600');
+                }
+
             } else {
                 // Jika tiada data ditemui
                 detailsDiv.classList.add('hidden');
                 noResultDiv.classList.remove('hidden');
+                
+                // --- Guna warna "Tidak Ditemui" ---
+                resultContainer.classList.add('bg-red-50', 'border-red-300');
+                noResultDiv.classList.remove('text-slate-500');
+                noResultDiv.classList.add('text-red-700');
             }
         }
     </script>
