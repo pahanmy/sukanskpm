@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semak Rumah Sukan Murid SK Pulau Melayu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Menggunakan font Inter untuk keseluruhan laman */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style tambahan untuk placeholder input */
+        ::placeholder {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen">
+    
+    <main class="w-full max-w-lg mx-auto p-4 md:p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+            
+            <div class="text-center mb-6">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">Semak Rumah Sukan Murid<br>SK Pulau Melayu</h1>
+                <p class="text-slate-500 mt-3">Taip nama untuk membuat semakan automatik.</p>
+            </div>
+
+            <div>
+                <label for="search-input" class="block text-sm font-medium text-slate-700 mb-1">Nama Penuh</label>
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Contoh: ADAM SAIFUDIN" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-slate-800" onkeyup="cariMaklumat()">
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div id="result-container" class="mt-8 bg-slate-50 p-6 rounded-xl border border-slate-200 hidden">
+                <div id="no-result" class="text-center text-slate-500 hidden">
+                    <p class="font-semibold">Maklumat tidak ditemui.</p>
+                    <p class="text-sm">Sila pastikan nama dieja dengan betul.</p>
+                </div>
+                <div id="details" class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-slate-500">Nama</p>
+                        <p id="result-nama" class="text-right font-semibold text-slate-800"></p>
+                    </div>
+                    <div class="border-t border-slate-200"></div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-slate-500">Kelas</p>
+                        <p id="result-kelas" class="text-right font-semibold text-slate-800"></p>
+                    </div>
+                     <div class="border-t border-slate-200"></div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-slate-500">Jantina</p>
+                        <p id="result-jantina" class="text-right font-semibold text-slate-800"></p>
+                    </div>
+                     <div class="border-t border-slate-200"></div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-slate-500">Rumah Sukan</p>
+                        <p id="result-rumah" class="text-right font-bold text-lg text-blue-600"></p>
+                    </div>
+                     <div class="border-t border-slate-200"></div>
+                     <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-slate-500">Peranan</p>
+                        <p id="result-peranan" class="text-right font-semibold text-slate-800"></p>
+                    </div>
+                     <div class="border-t border-slate-200"></div>
+                     <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-slate-500">Jawatan</p>
+                        <p id="result-jawatan" class="text-right font-semibold text-slate-800"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // --- PANGKALAN DATA (DATABASE) ---
+        // Data ini telah dimasukkan dari senarai yang anda berikan.
+        const pangkalanData = [
+            // RUMAH JUPITER
+            { nama: 'ADAM SAIFUDIN BIN MOHD ARNI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD ILHAM RAMADANI BIN ARMAN', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD RAMDHAN BIN KELANA', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD FARISH AMSYAR BIN ZULKEFLI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AWAL SYAFI BIN AMIRUL IZAM', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SITI NUR SAFIYYA BINTI MUHAMAD SOFIE', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR ARISSA BINTI MOHAMAD', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NURUL SUHADA BINTI MOHAMAD ZUKIFLEE', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'JERRY LABAN ANAK JOHNNY', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NAQIUDDIN MIKAEL BIN MUHAMMAD MU\'IZZUDDIN', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'RIFKAL BIN HANIFF OTHMAN', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'RIDHWAN HAKIM BIN ROSLAN', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD IQBAL IZZUDIN BIN ABDULLAH', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'BERNARD KUDANG ANAK NYUIN', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR KHAIRINA BINTI MOHAMAD KHALID', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'CHRIST ALEXANDRA SINDUN ANAK DOUGLAS GERUNSIN', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR ADELIA QISTIESH BINTI ALIF', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'JUNNIELLEYANNA JIEMEYSIX BINTI WISMIE', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD RAFIQ BIN ROZIMAN', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMAD ZAINUL ARIFFIN BIN AZIZ', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ANDY SYARIEL SYAFRUDDIN BIN ABDULLAH', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ZULFAQAR ANAK JUSI', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD NUR AIMAN ZULFADHLI BIN MOHAMAD NOORAZMIN', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MAIZA MAZRINA BINTI MAZLAN', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'UMIE NUR SAFIRA BINTI SAFARI', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR AMMARA BINTI KHALID', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SYAZRINA BINTI ABDUL AZIZ', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'LINDAWANNY ANAK WILLIAM', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'IWANI HAZIRAH BINTI ERWAN', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD IZZUDIN HAKIM BIN MOHD NOORAZMI', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD FAQEEH ANAQI BIN MOHD KHAIRUL AZMI', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AHMAD HAFIZ BIN HAFIZI', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD AZIQ RAYYAN BIN MOHAMMAD FADILLAH', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'JASTOAN ALIBRA BINTI JEFRI', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SHATILLEA HANA BINTI AMIRUL AZAM', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR RAISHA BINTI MOHAMAD FAIZAL', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SITI NURAIASYAH BINTI MUHAMMAD SYUKRI', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'FAZIYANA HUMAIRA BINTI FIRDAUS', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'UMMI UMAIRA BINTI MOHAMAD FAZU', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DANIYAL NIZAM BIN ABDUL HAFIZ', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUKHTAR BIN HANIF OTHMAN', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD FIRASH AMSYAR BIN MOHD FIRDAUS', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'YUNUS QUSHAYYI BIN YUSLAN', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NURUL EMILYANA BINTI ABDUL RAHMAN', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ELICA BINTI MITUN', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR QHAIRA ARISSA BINTI ABDULLAH', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NAAILA INARA BINTI MOHAMAD TARMIZI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'KHAYYISA IMANINA BINTI ISWANDI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AHMAD AQIL YUSUF BIN AMMAR', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD AMSYAR AQIL BIN SHUKRI', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MARCELLINO LAWAI ANAK MARRYUNBIANA', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHD AL FATTAH', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD AIRIT ZARYAN BIN MOHD AZEMI', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD FALIEEQ DARWISH BIN ROZAIDI', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'QHATRUNNADA NASUHA BINTI SYAIFUL NIZAM', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ALIESHA NAILA BINTI ABDUL RAHIM', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'PUTRI AUNI BINTI FAUZI', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR RAISHA BATRISYA BINTI MOHAMAD RAFIK', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Jupiter', peranan: 'Murid', jawatan: '-' },
+            
+            // RUMAH URANUS
+            { nama: 'NEVYH WUIANG WILLIAM', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'KHALISH IMAN BIN ISWANDI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD AQIL HAKIM BIN KHILIDI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD IHSAN BIN ABDULLAH', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'FIRASH DANIAL AISYFAHMI DHIADANIAL ISLAM BIN MOHAMMAD AZHAR', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR DAMIA DANIESYA BINTI MOHD FIRDAUS', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR HUDA JONG BINTI MOHD ALI', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR NAZURAH SHAKIRA BINTI ABDULLAH', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'FARIS IQBAL BIN ABDULLAH', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD JOHAN BIN ISWANDI', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'HAZIM IZZUAN BIN MOHAMAD ROSMINI', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD ADAM FIRASH BIN MOHD ASWAD', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD FAKHRUDDIN ATHAR BIN MOHAMAD RAFIK', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD ADIF BIN AZLAN', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD AUFA KHAIRY BIN IDIL', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NAMIRA NUR SYABITA RAHMADHANI BINTI ABDULLAH', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR ARINNA WAWA BT ABDULLAH', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR ADRA LYANA BINTI TALIP', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUKHRIZ RAYYAN RAYQARL BIN MOHAMMAD TIMUTIE', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'HAFIIZ SABRI BIN ABDULLAH', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMAD RAYYAN IZZ ZIQRI BIN MUHAMMAD ZULKIFLEE', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AZKA BAHRUL ULUM BIN ABDULLAH', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'UMAR RAYYAN BIN ABDULLAH', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD IKHYARUDDEEN ISMADDOL BIN ABDUL WAAJID', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ISAAC EUGENE NYUIN ANAK LAWRENCE', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR ALEESYA DAMIA FILZA BINTI ABDULLAH', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ZARA NAJWA BINTI ABDULLAH', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SITI NUR MARYAM BINTI MUHAMAD SOFIE', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR HIMA BINTI ABDULLAH', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR HUSNA SALSABILA BINTI ZULKIPLIE', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SITI AISYAH BINTI ZAINI', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD WAFIR HAIDHAR BIN MUHAMMAD HAFIZY', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD FAKHRULNIZAM BIN BAIEE', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DZULKARNAIN IBRAHIM BIN ABDUL JABBAR', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'PUTRI HANA HUMAIRA BINTI MUHAMMAD MU\'IZZUDDIN', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AIRYS SAFEENA BINTI DAHLAN', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DANISHA NIUBER ANAK DONNY SAIMON', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'WAN NUR ADNI ALEESYA BINTI WAN MOHAMAD NOR FADLOLLAH', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ARIEYSHA BEYKA ANAK JOHNNY', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR AISY JONG BINTI MOHD ALI', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ARIQ HAFEEZ BIN MOHD ARNI', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'RAMADHAN HAFIY HQ UKYONG BIN MOHD HARITH', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD SYAMEER BIN MUHAMAD SYAFEEQ', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD SYAFARULLAH BIN MUHAMMAD NAZRUL', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ALFARIS RAHEZAN BIN ABDUL MALIK', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUHA TALITSCHA BINTI MOHD ASWADI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ANISYAH LIYANA BINTI ROZAIDI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SITI KHADIJAH BINTI MOHAMMAD FAUZIE', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD FATHURRAHMAN KHAN BIN ZULKIPLIE', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AHMAD ANIQ BIN MOHD SHAFEYK', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD PUTERA HARRAZ BIN MOHAMMAD AMZAD', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'RAZIQ LAI BIN MOHD FIRDAUS LAI', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'IDDUL AIZUL AWAL BIN ABDULLAH', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'KHAIRA SOFEYA BINTI MOHAMMAD KHAIRUL', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MYRACLAIRE IVY', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR MIKAYLA DELISYA BINTI MOHD SHAFIQ', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AZRA SAFRIYYA BINTI ABDULLAH', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SITI NURFIYYAH BT MUHD SYUKRI', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SAFIYAH BINTI ABDULLAH', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Uranus', peranan: 'Murid', jawatan: '-' },
+            
+            // RUMAH ZUHAL
+            { nama: 'MUHAMMAD SYAKIR BIN MUHAMMAD SYUKRI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD HAMZAH BIN ABDULLAH', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD RAFIQ BIN YUSNI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'RAFA AQIL RIZQI BIN MOHAMMAD TARMIZI', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD WIRDI BIN MAZLAN', kelas: 'T6', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR IZZAH BATRISYA BINTI ARIFFIN', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ALYA ALLIYAH BINTI JUNAIDI', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AINANADIRA BINTI BAHTIAR', kelas: 'T6', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ABDUL FIQRI BIN ABDULLAH', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD PUTERA HAMZAH BIN MOHAMMAD AMZAD', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ASADEL IRSYAD BIN ISMAIL', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD HAZIZI ASYRAF BIN MOHAMMAD HAZIQ', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ASHRAFIQ FIQRI BIN ASYRAF HARUNIZAM', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD ADAM RAYYAN BIN ABDULLAH', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD SHAHJEEN HAIDHAR BIN MUHAMAD HAFIZY', kelas: 'T5', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NURUL AFISYA QAIRINA BINTI ROSIDI', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DAYANG NUR QALEESYA NABILA BINTI AWANG ASZARI', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MELINDA ELISSIA LIN LIN ANAK ANASTASYA INUT BERNADUS', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SITI NURSYAKIRAH BINTI MUHAMMAD SYUKRI', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DOLLYCELLA SUDAN ANAK DONNY SAIMON', kelas: 'T5', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DWEEZEL NATHAN DESMOND JOK', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMAD HAZIQ BIN MOHAMMAD AZAHAR', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD KHAIRI LUTFI BIN SALMAN', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD ASHRAF BIN MOHD AFFENDI', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD AMANUDDIN BIN MOHAMAD NURIZAL', kelas: 'T4', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR KIYSAA QAYSARA BINTI MOHD KHAIRUL AZMI', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AFIFA NAILA BINTI ABDUL RAHIM', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'CLARISSHA ONG SHIA WEI', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ROSNA BINTI ROSIDI', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SYAZALIANA BINTI MUHAMMAD NAZRUL', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NURSYAHANEEZ NATASYA BINTI MOHD AMRIE SYAH', kelas: 'T4', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ASFA NUR ILYAS BIN ASYRAF HARUNIZAM', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'HAFIQ LAI BIN MOHD FIRDAUS LAI', kelas: 'T3', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'SYRA ADELIA BINTI DAHLAN', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NAYLAA NADHRAH BINTI ISMAIL', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'IMAN INSYIRAH BINTI MUHAMMAD FARHAN', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'JESSELTA ANAK TAIB', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'EVA FATHIA BINTI MAS\'UD KHAN', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR FAIZNINA BINTI ABDULLAH', kelas: 'T3', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMED FAIZRIAN DZIQHARI BIN ABDUL HAQ', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD AZRI HILMI BIN MOHD RAFIE DINILLAH', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'ANIQ ASYRAF BIN MUHAMMAD FARHAN', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD PUTERA AMZAR BIN MOHAMMAD AMZAD', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD THAQEEF BIN MOHD. KHAIRY', kelas: 'T2', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NURUL BATRISYIA ADALIYA BINTI SAFARI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR FITRINA ALLEYA BINTI ZULHILMI SHAHMI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR RAISHA HANINAH LING BINTI NIKEZUANDI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SYAFIRA ALESYA BINTI MOHD SYAFRI', kelas: 'T2', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AHMAD SHAFEEQ FEDTHRI BIN RASHID', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUHAMMAD HIJJAZ BIN MOHAMAD HAFESZAN', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMAD NURIL BIN ABDULLAH', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'DAYLSON JAYIS CYNTHIA', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MOHAMMAD HADID BIN MOHD HAFIP IBRAHIM', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AMRUN UMAR BIN MUHAMAD SOFIE', kelas: 'T1', jantina: 'Lelaki', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MARYAM BINTI HANIF OTHMAN', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'MUKHRIZA NUR RAISSA BINTI MOHAMMAD TIMUTIE', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'NUR SHAMIKHA BINTI AMIRUL AZAM', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+            { nama: 'AISA ALIQAH BINTI JUNAIDI', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' }
+        ];
+
+        // --- FUNGSI CARIAN ---
+        function cariMaklumat() {
+            const input = document.getElementById('search-input').value.toUpperCase();
+            const resultContainer = document.getElementById('result-container');
+            const detailsDiv = document.getElementById('details');
+            const noResultDiv = document.getElementById('no-result');
+
+            if (input.length < 2) {
+                // Jangan tunjuk apa-apa jika input terlalu pendek
+                resultContainer.classList.add('hidden');
+                return;
+            }
+
+            // Cari data yang sepadan dengan input pengguna
+            const hasil = pangkalanData.find(data => data.nama.toUpperCase().includes(input));
+
+            resultContainer.classList.remove('hidden'); // Tunjukkan kotak hasil
+
+            if (hasil) {
+                // Jika data ditemui, paparkan maklumat
+                detailsDiv.classList.remove('hidden');
+                noResultDiv.classList.add('hidden');
+
+                document.getElementById('result-nama').textContent = hasil.nama;
+                document.getElementById('result-kelas').textContent = hasil.kelas;
+                document.getElementById('result-jantina').textContent = hasil.jantina;
+                document.getElementById('result-rumah').textContent = hasil.rumahSukan;
+                document.getElementById('result-peranan').textContent = hasil.peranan;
+                document.getElementById('result-jawatan').textContent = hasil.jawatan;
+            } else {
+                // Jika tiada data ditemui
+                detailsDiv.classList.add('hidden');
+                noResultDiv.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
