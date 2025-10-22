@@ -12,12 +12,18 @@
         /* Menggunakan font Inter untuk keseluruhan laman */
         body {
             font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column; /* Susun main dan footer secara menegak */
+            min-height: 100vh; /* Pastikan body sekurang-kurangnya setinggi viewport */
+        }
+        main {
+            flex-grow: 1; /* Biarkan main content mengambil ruang yang ada */
         }
         /* Style tambahan untuk placeholder input */
         ::placeholder {
             color: #9ca3af;
         }
-        /* Menghilangkan penanda 'arrow' lalai pada tag <details> */
+        /* Menghilangkan penanda 'arrow' lalai pada tag <details> (walaupun tidak digunakan lagi, baik dikekalkan) */
         summary {
             list-style: none; /* Firefox */
         }
@@ -26,10 +32,10 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-blue-200 flex items-center justify-center min-h-screen py-12">
+<body class="bg-gradient-to-br from-gray-100 to-blue-200">
     
-    <main class="w-full max-w-lg mx-auto p-4 md:p-8">
-        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+    <main class="w-full max-w-lg mx-auto p-4 md:p-8 flex items-center justify-center">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 w-full">
             
             <div class="flex justify-center mb-4">
                 <img src="https://i.imgur.com/PAylr2P.png" alt="Logo SK Pulau Melayu" class="w-20 h-20">
@@ -104,66 +110,13 @@
 
             </div>
 
-            <div class="mt-8 pt-6 border-t border-slate-200">
-                <h3 class="text-center text-base font-semibold text-slate-700 mb-4">Senarai Guru Rumah Sukan 2025</h3>
-                
-                <div class="space-y-3">
-                    
-                    <details class="group rounded-lg bg-red-50 border border-red-200 overflow-hidden">
-                        <summary class="p-4 flex justify-between items-center cursor-pointer">
-                            <span class="font-bold text-red-700 text-base">Jupiter (Merah)</span>
-                            <span class="text-red-700 font-bold text-xl transition-transform duration-200 transform group-open:rotate-45">+</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-slate-700">
-                            <ul class="space-y-1 text-sm list-disc pl-5">
-                                <li><span class="font-semibold">ISKARNAIN BIN DILLAH (Ketua)</span></li>
-                                <li><span class="font-semibold">HELLEN LIHAN (Penolong)</span></li>
-                                <li>ALICE BARU</li>
-                                <li>SURIYA BINTI MURNI</li>
-                                <li>NASARUDIN BIN AHAMAD</li>
-                                <li>JACQUELINE MAVIS JACKUIS</li>
-                            </ul>
-                        </div>
-                    </details>
-
-                    <details class="group rounded-lg bg-gray-100 border border-gray-300 overflow-hidden">
-                        <summary class="p-4 flex justify-between items-center cursor-pointer">
-                            <span class="font-bold text-gray-800 text-base">Uranus (Hitam)</span>
-                            <span class="text-gray-800 font-bold text-xl transition-transform duration-200 transform group-open:rotate-45">+</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-slate-700">
-                            <ul class="space-y-1 text-sm list-disc pl-5">
-                                <li><span class="font-semibold">CHRISTIE CHAUNG KUYAH (Ketua)</span></li>
-                                <li><span class="font-semibold">NOR IZZATI BINTI ABDULLAH (Penolong)</span></li>
-                                <li>TAIB BROWN</li>
-                                <li>ELIZABETH BINTI LAI</li>
-                                <li>DESBRIYANI MARIPA</li>
-                                <li>DUNSTANCE JENISANG JOHNY</li>
-                            </ul>
-                        </div>
-                    </details>
-
-                    <details class="group rounded-lg bg-green-50 border border-green-200 overflow-hidden">
-                        <summary class="p-4 flex justify-between items-center cursor-pointer">
-                            <span class="font-bold text-green-700 text-base">Zuhal (Hijau)</span>
-                            <span class="text-green-700 font-bold text-xl transition-transform duration-200 transform group-open:rotate-45">+</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-slate-700">
-                            <ul class="space-y-1 text-sm list-disc pl-5">
-                                <li><span class="font-semibold">DESMOND JOK IPUI (Ketua)</span></li>
-                                <li><span class="font-semibold">NOR AZUANENY BINTI IBRAHIM (Penolong)</span></li>
-                                <li>HIEW CHIN HAUR</li>
-                                <li>ZURIDAH BINTI MATUSIN</li>
-                                <li>DIEGO KILLAH LABANG</li>
-                            </ul>
-                        </div>
-                    </details>
-                    
-                </div>
-            </div>
-
-        </div>
+             </div>
     </main>
+
+    <footer class="w-full text-center py-4 mt-auto">
+        <p class="text-xs text-slate-500">Projek Inovasi oleh Pahan (2025)</p>
+    </footer>
+
 
     <script>
         // --- PANGKALAN DATA (DATABASE) ---
@@ -349,6 +302,7 @@
             { nama: 'MUNEERA NUR RAISSA BINTI MOHAMMAD TIMUTIE', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
             { nama: 'NUR SHAMIERA BINTI AMIRUL AZAM', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
             { nama: 'AISA ALLIQAH BINTI JUNAIDI', kelas: 'T1', jantina: 'Perempuan', rumahSukan: 'Zuhal', peranan: 'Murid', jawatan: '-' },
+
             
             // --- DATA GURU (KEKAL) ---
             // GURU JUPITER
